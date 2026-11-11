@@ -1,0 +1,1 @@
+gcc shortcut/main.c common/*.c -o shortcut.exe -municode -mwindows -lpathcch -Wall -Wextra
