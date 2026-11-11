@@ -57,7 +57,7 @@ int resolve_path(const wchar_t *root,
             
             // now, all three possibilities are defined in relative and start with the true path, no root.
 
-            if (FAILED(PathCchCombineEx( // this will now take the relative path we have, and plop it onto the root we have (the one bsed on the shortcut). then, it puts it in the output.
+            if (FAILED(PathCchCombineEx( // this will now take the relative path we have, and plop it onto the root we have (the one based on the shortcut). then, it puts it in the output.
                 output, outputSize, root, relative, PATHCCH_NONE
             ))) {
                 return 0;

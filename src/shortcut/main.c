@@ -46,7 +46,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrev, PWSTR cmdLine, int showCmd
     if (wcscpy_s(config, BUF_SIZE, root) != 0)
         return 1;
 
-    if (wcscat_s(config, BUF_SIZE, L"config\\launchers.ini")) // so, this will concatenate wide character strings. this case, we're defining a destination, which is config. this currently has our config in it (for example, "E:\"), but it ends in our null terminator. what wcscat_s does, it is find the null terminator, and starts writing at its position, adding the source, or the L"config\\launchers.ini" onto it, giving a full path to the config file. 
+    if (wcscat_s(config, BUF_SIZE, L"config\\launchers.conf")) // so, this will concatenate wide character strings. this case, we're defining a destination, which is config. this currently has our config in it (for example, "E:\"), but it ends in our null terminator. what wcscat_s does, it is find the null terminator, and starts writing at its position, adding the source, or the L"config\\launchers.ini" onto it, giving a full path to the config file. 
         return 3;
 
     wchar_t output[BUF_SIZE];
@@ -57,6 +57,8 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrev, PWSTR cmdLine, int showCmd
             L"Portable Launcher", MB_ICONERROR);
         return 4;
         }
+
+    MessageBoxW(NULL, output, L"1. Raw INI Value", MB_OK);
 
     wchar_t *path = output; // define a wchar_t pointer of path for the output array.
     wchar_t *args = NULL; // define a wchar_t pointer that is null.
@@ -83,8 +85,12 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrev, PWSTR cmdLine, int showCmd
     while (args && *args == L' ') // if the args is not-null, and the args pointer points to a space, move one forward to the start of the args itself. since it's a while statement, if there are multiple spaces, it will move forward until it reaches a non-space.
         args++;
 
+    MessageBoxW(NULL, path, L"2. Parsed Path", MB_OK);
+
     if (!resolve_path(root, self, path, fullTarget, BUF_SIZE))
         return 1;
+
+    MessageBoxW(NULL, fullTarget, L"3. Resolved Path", MB_OK);
 
     if (!create_process(fullTarget, args))
         return 6;

@@ -40,6 +40,18 @@ int create_process(const wchar_t *executable, const wchar_t *args) {
             return 0;
     }
 
+    wchar_t workingDir[BUF_SIZE];
+
+    if (wcscpy_s(workingDir, BUF_SIZE, executable) != 0)
+        return 0;
+
+    wchar_t *lastSlash = wcsrchr(workingDir, L'\\');
+
+    if (!lastSlash)
+        return 0;
+    
+    *lastSlash = L'\0';
+
     STARTUPINFOW si = {0}; // this is a struct that windows uses. it contains a bunch of variables. setting it to {0} uses detaults.
     PROCESS_INFORMATION pi = {0}; // same as above, using defaults.
     si.cb = sizeof(si); // setting the cb variable inside of the struct.
@@ -52,7 +64,7 @@ int create_process(const wchar_t *executable, const wchar_t *args) {
         FALSE, // dont inherit handles
         0, // no special creation flags
         NULL, // inherit parent's environment
-        NULL, // inherit parent's working directory
+        workingDir, // inherit parent's working directory
         &si, // memory address of the startup settings
         &pi // memory address for process information.
     )) {
