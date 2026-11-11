@@ -53,12 +53,12 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrev, PWSTR cmdLine, int showCmd
 
     if (!config_get_value(config, name, output, BUF_SIZE)) {// this will run the config_get_value function and then output the path. if it doesnt work, it opens a message box saying no matching program was found.
         MessageBoxW(NULL,
-            L"No matching program found in launchers.ini",
+            L"No matching program found in launchers.conf. Check key names.",
             L"Portable Launcher", MB_ICONERROR);
         return 4;
         }
 
-    MessageBoxW(NULL, output, L"1. Raw INI Value", MB_OK);
+    // MessageBoxW(NULL, output, L"1. Raw INI Value", MB_OK);
 
     wchar_t *path = output; // define a wchar_t pointer of path for the output array.
     wchar_t *args = NULL; // define a wchar_t pointer that is null.
@@ -85,12 +85,12 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrev, PWSTR cmdLine, int showCmd
     while (args && *args == L' ') // if the args is not-null, and the args pointer points to a space, move one forward to the start of the args itself. since it's a while statement, if there are multiple spaces, it will move forward until it reaches a non-space.
         args++;
 
-    MessageBoxW(NULL, path, L"2. Parsed Path", MB_OK);
+    // MessageBoxW(NULL, path, L"2. Parsed Path", MB_OK);
 
     if (!resolve_path(root, self, path, fullTarget, BUF_SIZE))
         return 1;
 
-    MessageBoxW(NULL, fullTarget, L"3. Resolved Path", MB_OK);
+    // MessageBoxW(NULL, fullTarget, L"3. Resolved Path", MB_OK);
 
     if (!create_process(fullTarget, args))
         return 6;
